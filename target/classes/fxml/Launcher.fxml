@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.*?>
+
+<HBox xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="com.codingotaku.apps.mangaviewer.LauncherController">
+	<VBox fx:id='slideBar' minWidth="200">
+		<children>
+			<Button text="Advanced Search" minWidth="150" />
+			<Button text="Profile" minWidth="150" />
+			<Button text="Favorites" minWidth="150" />
+		</children>
+	</VBox>
+	<VBox>
+		<TextField fx:id="search" promptText="Search manga"
+			HBox.hgrow="ALWAYS" />
+		<ScrollPane minWidth="350" VBox.vgrow="ALWAYS" fitToHeight="true">
+			<content>
+				<ListView fx:id='mangaList' minWidth="350" VBox.vgrow="ALWAYS" />
+			</content>
+		</ScrollPane>
+	</VBox>
+	<VBox>
+		<Pane fx:id="detailPane" minWidth="300" minHeight="500"/>
+	</VBox>
+</HBox>
+
