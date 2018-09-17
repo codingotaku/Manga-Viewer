@@ -107,7 +107,7 @@ public class MangaDetails extends GridPane {
 		list.setItems(observableList);
 
 		readFromStart.setOnAction(event -> {
-			new ReadDialog(observableList, 0);
+			new ReadDialog(observableList, observableList.size() - 1);
 		});
 		getChildren().addAll(poster, hits, status, chapters, categories, description, title, author,
 				lists, readFromStart, continueRead);
