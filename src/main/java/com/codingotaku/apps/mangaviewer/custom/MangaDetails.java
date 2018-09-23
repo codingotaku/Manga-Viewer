@@ -83,6 +83,7 @@ public class MangaDetails extends GridPane {
 		ScrollPane aliasPane = new ScrollPane(alias);
 		HBox lists = new HBox();
 		Button readFromStart = new Button("Read from start");
+		Button readFromSelected = new Button("Read from selected");
 		Button continueRead = new Button("Continue read");
 		aliasPane.setMinWidth(200);
 		lists.setMinWidth(400);
@@ -97,6 +98,7 @@ public class MangaDetails extends GridPane {
 		GridPane.setConstraints(title, 0, 6);
 		GridPane.setConstraints(author, 3, 6);
 		GridPane.setConstraints(readFromStart, 4, 6, 2, 1);
+		GridPane.setConstraints(readFromSelected, 5, 6, 2, 1);
 		GridPane.setConstraints(continueRead, 6, 6);
 		GridPane.setConstraints(lists, 0, 7, 8, 1);
 
@@ -106,11 +108,15 @@ public class MangaDetails extends GridPane {
 		description.setWrapText(true);
 		list.setItems(observableList);
 
+		readFromSelected.setOnAction((e)->{
+			new ReadDialog(observableList, list.getSelectionModel().getSelectedIndex());
+		});
 		readFromStart.setOnAction(event -> {
 			new ReadDialog(observableList, observableList.size() - 1);
 		});
+
 		getChildren().addAll(poster, hits, status, chapters, categories, description, title, author,
-				lists, readFromStart, continueRead);
+				lists, readFromStart,readFromSelected, continueRead);
 
 		new Thread(() -> {
 			Image image;

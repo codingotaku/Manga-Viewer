@@ -31,13 +31,15 @@ public class Server {
 		Gson gson = new Gson();
 		File file = new File("properties.json");
 		try {
-			if (file.exists() && (System.currentTimeMillis() - file.lastModified()) > 86400000) {
+			if (file.exists() && (System.currentTimeMillis() - file.lastModified()) < 86400000) {
 				BufferedReader reader = new BufferedReader(new FileReader(file));
 				list = gson.fromJson(reader, MangaList.class);
+				reader.close();
 			} else {
 				list = api.getAllManga();
 				BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 				gson.toJson(list, writer);
+				writer.close();
 			}
 		} catch (IOException e) {
 			// TODO: handle network exception
