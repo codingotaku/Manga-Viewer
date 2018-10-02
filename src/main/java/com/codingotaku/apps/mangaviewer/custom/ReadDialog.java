@@ -58,9 +58,9 @@ public class ReadDialog {
 
 		view.setOnMouseMoved(event -> {
 			event.consume();
-			if (event.getSceneX() > view.getWidth() - 100) {
+			if (event.getSceneX() >= view.getWidth() - 100) {
 				scene.setCursor(new ImageCursor(next));
-			} else if (event.getSceneX() < 100) {
+			} else if (event.getSceneX() <= 100) {
 				scene.setCursor(new ImageCursor(previous));
 			} else {
 				scene.setCursor(Cursor.DEFAULT);

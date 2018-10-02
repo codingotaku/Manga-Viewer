@@ -67,8 +67,8 @@ public class MangaDetails extends GridPane {
 		setMaxHeight(800);
 
 		ImageView poster = new ImageView();
-		poster.setFitHeight(280);
-		poster.setFitWidth(180);
+		poster.setFitHeight(200);
+		poster.setFitWidth(130);
 
 		Label hits = new Label("Hits : " + String.valueOf(manga.getHits()));
 		Label status = new Label("Status : " + (manga.getStatus() == 1 ? "In Progress" : "Completed"));
@@ -88,16 +88,18 @@ public class MangaDetails extends GridPane {
 		lists.setMinWidth(400);
 		lists.getChildren().addAll(aliasPane, scrollPane);
 
-		GridPane.setConstraints(poster, 0, 0, 3, 5);
+		HBox titleBox = new HBox(10);
+		HBox readBox = new HBox(10);
+		titleBox.getChildren().addAll(title, author);
+		readBox.getChildren().addAll(read, readSelected);
+		GridPane.setConstraints(poster, 0, 0, 3, 4);
 		GridPane.setConstraints(hits, 4, 0);
 		GridPane.setConstraints(status, 5, 0);
 		GridPane.setConstraints(chapters, 6, 0);
-		GridPane.setConstraints(categories, 4, 1, 4, 1);
-		GridPane.setConstraints(description, 3, 2, 4, 3);
-		GridPane.setConstraints(title, 0, 6);
-		GridPane.setConstraints(author, 3, 6);
-		GridPane.setConstraints(read, 4, 6, 2, 1);
-		GridPane.setConstraints(readSelected, 5, 6, 2, 1);
+		GridPane.setConstraints(categories, 4, 1, 4, 2);
+		GridPane.setConstraints(description, 4, 3, 4, 2);
+		GridPane.setConstraints(titleBox, 0, 5,8,1);
+		GridPane.setConstraints(readBox, 0, 6,8,1);
 		GridPane.setConstraints(lists, 0, 7, 8, 2);
 
 		scrollPane.setFitToHeight(true);
@@ -111,8 +113,8 @@ public class MangaDetails extends GridPane {
 		readSelected.setOnAction((e) -> new ReadDialog(observableList, list.getSelectionModel().getSelectedIndex()));
 		read.setOnAction(event -> new ReadDialog(observableList, observableList.size() - 1));
 
-		getChildren().addAll(poster, hits, status, chapters, categories, description, title, author,
-				lists, read, readSelected);
+		getChildren().addAll(poster, hits, status, chapters, categories, description, titleBox,
+				lists, readBox);
 
 		new Thread(() -> {
 			if (manga.getImage() != null && !manga.getImage().endsWith("/null")) {

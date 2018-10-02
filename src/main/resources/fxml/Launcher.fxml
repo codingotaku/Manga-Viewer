@@ -18,7 +18,7 @@
 		onMousePressed="#titleSelected" onMouseDragged="#titleDragged"
 		onMouseReleased="#titleReleased">
 		<padding>
-			<Insets left="5" top="5" bottom="5" right="5" />
+			<Insets left="5" top="7.5" bottom="7.5" right="5" />
 		</padding>
 		<ImageView id="boxImage" fitWidth="20" fitHeight="20">
 			<image>
@@ -39,6 +39,9 @@
 			onMouseClicked="#close" />
 	</HBox>
 	<HBox VBox.vgrow="ALWAYS">
+		<padding>
+			<Insets left="5" top="7.5" bottom="7.5" right="5"/>
+		</padding>
 		<VBox fx:id='slideBar' minWidth="200">
 			<children>
 				<Button text="Advanced Search" minWidth="150" disable="true" />

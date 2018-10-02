@@ -15,9 +15,9 @@ public class Launcher extends Application {
 	public void start(Stage primaryStage) throws IOException {
 		primaryStage.setMinWidth(1000.0);
 		primaryStage.setMinHeight(500.0);
-
 		primaryStage.setWidth(1000.0);
 		primaryStage.setHeight(500.0);
+
 		primaryStage.initStyle(StageStyle.UNDECORATED);
 
 		VBox root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/Launcher.fxml"));
