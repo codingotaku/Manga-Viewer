@@ -38,22 +38,6 @@
 	-fx-background-color:#222222;
 }
 
-/* Fix scroll bar buttons arrows colors */
-.scroll-bar > .increment-button > .increment-arrow,
-.scroll-bar > .decrement-button > .decrement-arrow {
-    -fx-background-color: -fx-mark-highlight-color, rgb(220.0, 220.0, 220.0);
-}
-
-.scroll-bar > .increment-button:hover > .increment-arrow,
-.scroll-bar > .decrement-button:hover > .decrement-arrow {
-    -fx-background-color: -fx-mark-highlight-color, rgb(240.0, 240.0, 240.0);
-}
-
-.scroll-bar > .increment-button:pressed > .increment-arrow,
-.scroll-bar > .decrement-button:pressed > .decrement-arrow {
-    -fx-background-color: -fx-mark-highlight-color, rgb(255.0, 255.0, 255.0);
-}
-
 .button{
    /*-fx-background-color:firebrick;*/
    -fx-text-fill:white;

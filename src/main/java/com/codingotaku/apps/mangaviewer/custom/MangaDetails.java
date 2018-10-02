@@ -82,9 +82,8 @@ public class MangaDetails extends GridPane {
 		ScrollPane scrollPane = new ScrollPane(list);
 		ScrollPane aliasPane = new ScrollPane(alias);
 		HBox lists = new HBox();
-		Button readFromStart = new Button("Read from start");
-		Button readFromSelected = new Button("Read from selected");
-		Button continueRead = new Button("Continue read");
+		Button read = new Button("Read");
+		Button readSelected = new Button("Read selected");
 		aliasPane.setMinWidth(200);
 		lists.setMinWidth(400);
 		lists.getChildren().addAll(aliasPane, scrollPane);
@@ -97,35 +96,30 @@ public class MangaDetails extends GridPane {
 		GridPane.setConstraints(description, 3, 2, 4, 3);
 		GridPane.setConstraints(title, 0, 6);
 		GridPane.setConstraints(author, 3, 6);
-		GridPane.setConstraints(readFromStart, 4, 6, 2, 1);
-		GridPane.setConstraints(readFromSelected, 5, 6, 2, 1);
-		GridPane.setConstraints(continueRead, 6, 6);
-		GridPane.setConstraints(lists, 0, 7, 8, 1);
+		GridPane.setConstraints(read, 4, 6, 2, 1);
+		GridPane.setConstraints(readSelected, 5, 6, 2, 1);
+		GridPane.setConstraints(lists, 0, 7, 8, 2);
 
 		scrollPane.setFitToHeight(true);
 		scrollPane.setFitToWidth(true);
 		description.setEditable(false);
 		description.setWrapText(true);
+		readSelected.setDisable(true);
+		read.setDisable(true);
 		list.setItems(observableList);
 
-		readFromSelected.setOnAction((e)->{
-			new ReadDialog(observableList, list.getSelectionModel().getSelectedIndex());
-		});
-		readFromStart.setOnAction(event -> {
-			new ReadDialog(observableList, observableList.size() - 1);
-		});
+		readSelected.setOnAction((e) -> new ReadDialog(observableList, list.getSelectionModel().getSelectedIndex()));
+		read.setOnAction(event -> new ReadDialog(observableList, observableList.size() - 1));
 
 		getChildren().addAll(poster, hits, status, chapters, categories, description, title, author,
-				lists, readFromStart,readFromSelected, continueRead);
+				lists, read, readSelected);
 
 		new Thread(() -> {
-			Image image;
-			if (manga.getImage() != null && !manga.getImage().endsWith("/null"))
-				image = new Image(manga.getImage());
-			else
-				image = new Image(getClass().getClassLoader().getResourceAsStream("images/panda.png"));
-
-			poster.setImage(image);
+			if (manga.getImage() != null && !manga.getImage().endsWith("/null")) {
+				poster.setImage(new Image(manga.getImage()));
+			} else {
+				poster.setImage(new Image(getClass().getClassLoader().getResourceAsStream("images/panda.png")));
+			}
 
 			try {
 				MangaInfo info = manga.getMangaInfo();
@@ -135,9 +129,9 @@ public class MangaDetails extends GridPane {
 					author.setText("Author - " + info.getAuthor());
 					alias.setText(getAlias(info.getAka()));
 					chapters.setText("Chapters - " + info.getChapters_len());
-					info.getChapters().forEach(chapter -> {
-						observableList.add(new ChapterDetails(chapter));
-					});
+					info.getChapters().forEach(chapter -> observableList.add(new ChapterDetails(chapter)));
+					readSelected.setDisable(false);
+					read.setDisable(false);
 				});
 			} catch (IOException e) {
 				// TODO: Handle network exception

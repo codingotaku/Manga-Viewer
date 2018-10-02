@@ -8,28 +8,59 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
+<?import javafx.scene.control.Label?>
 
-<HBox xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="com.codingotaku.apps.mangaviewer.LauncherController">
-	<VBox fx:id='slideBar' minWidth="200">
-		<children>
-			<Button text="Advanced Search" minWidth="150" />
-			<Button text="Profile" minWidth="150" />
-			<Button text="Favorites" minWidth="150" />
-		</children>
-	</VBox>
-	<VBox>
-		<TextField fx:id="search" promptText="Search manga"
-			HBox.hgrow="ALWAYS" />
-		<ScrollPane minWidth="350" VBox.vgrow="ALWAYS" fitToHeight="true">
-			<content>
-				<ListView fx:id='mangaList' minWidth="350" VBox.vgrow="ALWAYS" />
-			</content>
-		</ScrollPane>
-	</VBox>
-	<VBox>
-		<Pane fx:id="detailPane" minWidth="300" minHeight="500"/>
-	</VBox>
-</HBox>
+	<HBox fx:id="title" prefHeight="30"
+		onMousePressed="#titleSelected" onMouseDragged="#titleDragged"
+		onMouseReleased="#titleReleased">
+		<padding>
+			<Insets left="5" top="5" bottom="5" right="5" />
+		</padding>
+		<ImageView id="boxImage" fitWidth="20" fitHeight="20">
+			<image>
+				<Image url="/images/panda.png" />
+			</image>
+		</ImageView>
+		<HBox fx:id="title" prefHeight="30" HBox.hgrow="ALWAYS">
+			<padding>
+				<Insets left="5" />
+			</padding>
+			<Label text="Manga Viewer" />
+		</HBox>
+		<Label text="_" prefWidth="30" alignment="CENTER"
+			fx:id="minimize" onMouseClicked="#minimize" />
+		<Label text="⬜" prefWidth="30" alignment="CENTER" fx:id="resize"
+			onMouseClicked="#resize" />
+		<Label text="X" prefWidth="30" alignment="CENTER" fx:id="close"
+			onMouseClicked="#close" />
+	</HBox>
+	<HBox VBox.vgrow="ALWAYS">
+		<VBox fx:id='slideBar' minWidth="200">
+			<children>
+				<Button text="Advanced Search" minWidth="150" disable="true" />
+				<Button text="Profile" minWidth="150" disable="true"
+					onAction="#loadProfile" />
+				<Button text="Favorites" minWidth="150" disable="true" />
+			</children>
+		</VBox>
+		<VBox>
+			<TextField fx:id="search" promptText="Search manga"
+				HBox.hgrow="ALWAYS" />
+			<ScrollPane minWidth="350" VBox.vgrow="ALWAYS"
+				fitToHeight="true">
+				<content>
+					<ListView fx:id='mangaList' minWidth="350"
+						VBox.vgrow="ALWAYS" />
+				</content>
+			</ScrollPane>
+		</VBox>
+		<VBox>
+			<Pane fx:id="detailPane" minWidth="300" minHeight="500" />
+		</VBox>
+	</HBox>
+</VBox>
 
