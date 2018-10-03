@@ -98,8 +98,8 @@ public class MangaDetails extends GridPane {
 		GridPane.setConstraints(chapters, 6, 0);
 		GridPane.setConstraints(categories, 4, 1, 4, 2);
 		GridPane.setConstraints(description, 4, 3, 4, 2);
-		GridPane.setConstraints(titleBox, 0, 5,8,1);
-		GridPane.setConstraints(readBox, 0, 6,8,1);
+		GridPane.setConstraints(titleBox, 0, 5, 8, 1);
+		GridPane.setConstraints(readBox, 0, 6, 8, 1);
 		GridPane.setConstraints(lists, 0, 7, 8, 2);
 
 		scrollPane.setFitToHeight(true);
@@ -109,6 +109,8 @@ public class MangaDetails extends GridPane {
 		readSelected.setDisable(true);
 		read.setDisable(true);
 		list.setItems(observableList);
+		list.getSelectionModel().selectedItemProperty()
+				.addListener((listener, oldVal, newVal) -> readSelected.setDisable(false));
 
 		readSelected.setOnAction((e) -> new ReadDialog(observableList, list.getSelectionModel().getSelectedIndex()));
 		read.setOnAction(event -> new ReadDialog(observableList, observableList.size() - 1));
@@ -132,7 +134,6 @@ public class MangaDetails extends GridPane {
 					alias.setText(getAlias(info.getAka()));
 					chapters.setText("Chapters - " + info.getChapters_len());
 					info.getChapters().forEach(chapter -> observableList.add(new ChapterDetails(chapter)));
-					readSelected.setDisable(false);
 					read.setDisable(false);
 				});
 			} catch (IOException e) {

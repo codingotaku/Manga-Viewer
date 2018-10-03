@@ -30,6 +30,7 @@ public class Server {
 		JEdenManga api = new JEdenManga();
 		Gson gson = new Gson();
 		File file = new File("properties.json");
+	
 		try {
 			if (file.exists() && (System.currentTimeMillis() - file.lastModified()) < 86400000) {
 				BufferedReader reader = new BufferedReader(new FileReader(file));

@@ -22,8 +22,9 @@ public class ReadDialog {
 	private final ImageView imgView = new ImageView();
 	private final ZoomScrollPane view = new ZoomScrollPane(imgView);
 	private final ObservableList<ChapterDetails> chapters;
-
+	private final ArrayList<Image> images;
 	private ArrayList<Page> pages;
+
 	private ChapterInfo chapter = null;
 
 	private int pageIndex = 0;
@@ -48,10 +49,10 @@ public class ReadDialog {
 		loadNewChapter(dialog);
 		imgView.setFocusTraversable(true);
 		imgView.requestFocus();
+		images = new ArrayList<Image>();
 
 		String exitHint = "Press Ctrl+F or Esc to exit fullscreen";
-		String travelHint = "Ctrl+Left/Right for next/previous page";
-		dialog.setFullScreenExitHint(String.format("%s\n\n%s", exitHint, travelHint));
+		dialog.setFullScreenExitHint(exitHint);
 		dialog.setFullScreen(true);
 		scene.getStylesheets()
 				.add(getClass().getClassLoader().getResource("css/style.css").toExternalForm());
@@ -70,9 +71,9 @@ public class ReadDialog {
 		view.setOnMouseClicked(event -> {
 			event.consume();
 			if (event.getSceneX() > view.getWidth() - 100) {
-				nextChapter(dialog);
+				nextPage(dialog);
 			} else if (event.getSceneX() < 100) {
-				prevChapter(dialog);
+				prevPage(dialog);
 			}
 		});
 
@@ -81,13 +82,13 @@ public class ReadDialog {
 			if (event.isControlDown()) {
 				switch (event.getCode()) {
 				case RIGHT:
-					nextChapter(dialog);
+					nextPage(dialog);
 					break;
 				case LEFT:
-					prevChapter(dialog);
+					prevPage(dialog);
 					break;
 				case F:
-					dialog.setFullScreen(false);
+					dialog.setFullScreen(!dialog.isFullScreen());
 					break;
 				default:
 					// do nothing
@@ -99,12 +100,11 @@ public class ReadDialog {
 		dialog.show();
 	}
 
-	private void prevChapter(Stage stage) {
-		if (pageIndex < pages.size() - 1) {
-			pageIndex++;
-			Toast.makeText(stage, "Loading page " + (pages.size() - pageIndex));
-			imgView.setImage(new Image(pages.get(pageIndex).getImageUrl()));
-			view.setVvalue(0.0);
+	private void prevPage(Stage stage) {
+		if (pageIndex > 0) {
+			pageIndex--;
+			Toast.makeText(stage, "Loading page " + pageIndex);
+			new Thread(() -> loadPage(pageIndex)).start();
 		} else if (chapterIndex < chapters.size() - 1) {
 			if (!isLoading) {
 				chapterIndexPrev = chapterIndex;
@@ -116,15 +116,11 @@ public class ReadDialog {
 		}
 	}
 
-	private void nextChapter(Stage stage) {
-		if (pageIndex > 0) {
-			pageIndex--;
-			Toast.makeText(stage, "Reading page " + (pages.size() - pageIndex));
-			new Thread(() -> {
-				imgView.setImage(new Image(pages.get(pageIndex).getImageUrl()));
-				view.setVvalue(0.0);
-			}).start();
-
+	private void nextPage(Stage stage) {
+		if (pageIndex < pages.size() - 2) {
+			pageIndex++;
+			Toast.makeText(stage, "Loading page " + pageIndex);
+			new Thread(() -> loadPage(pageIndex)).start();
 		} else if (chapterIndex > 0) {
 			if (!isLoading) {
 				chapterIndexPrev = chapterIndex;
@@ -136,20 +132,36 @@ public class ReadDialog {
 		}
 	}
 
+	private void loadPage(int pageIndex) {
+		Platform.runLater(() -> {
+			imgView.setImage(images.get(pageIndex));
+			if (pageIndex < pages.size() - 2) {
+				if (pageIndex == images.size() - 1) {
+					images.add(new Image(pages.get(pages.size() - pageIndex - 1).getImageUrl()));
+				}
+			}
+			view.setVvalue(0.0);
+		});
+	}
+
 	private void loadNewChapter(Stage stage) {
 		chapter = chapters.get(chapterIndex).getChapter();
-		Platform.runLater(() -> Toast.makeText(stage, "Loading " + chapter.getChapterNumber()));
+		String chapterNumber = chapter.getChapterNumber();
+		Platform.runLater(() -> Toast.makeText(stage, "Loading Chapter " + chapterNumber));
+
 		new Thread(() -> {
 			isLoading = true;
 			try {
 				pages = chapter.getPages();
-				pageIndex = pages.size() - 1;
-				imgView.setImage(new Image(pages.get(pageIndex).getImageUrl()));
-				view.setVvalue(0.0);
-				Platform.runLater(() -> Toast.makeText(stage, "Reading " + chapter.getChapterNumber() + " page 0"));
+				images.clear();
+				pageIndex = 0;
+				images.add(new Image(pages.get(pageIndex).getImageUrl()));
+				loadPage(pageIndex);
+				String message = String.format("Reading Chapter %s page 0", chapterNumber);
+				Platform.runLater(() -> Toast.makeText(stage, message));
 			} catch (IOException e) {
 				chapterIndex = chapterIndexPrev;
-				Platform.runLater(() -> Toast.makeText(stage, "Failed to load " + chapter.getChapterNumber()));
+				Platform.runLater(() -> Toast.makeText(stage, "Failed to load chapter " + chapterNumber));
 			}
 			isLoading = false;
 		}).start();

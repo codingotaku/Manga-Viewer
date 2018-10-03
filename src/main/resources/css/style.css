@@ -84,3 +84,27 @@ Label {
     -fx-border-color: #e2e2e2;
     -fx-border-width: 2.0;
 }
+
+.button:focused {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0.0 0.0 -1.0 0.0, 0.0, 1.0, 2.0;
+    -fx-background-radius: 3.0px, 3.0px, 2.0px, 1.0px;
+}
+
+.scroll-pane:focused,
+.list-view:focused{
+    -fx-background-color: -fx-box-border, -fx-control-inner-background;
+    -fx-background-insets: 0.0, 1.0;
+    -fx-padding: 1.0;
+}
+
+.text-input:focused {
+    -fx-highlight-fill: -fx-accent;
+    -fx-highlight-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, derive(-fx-text-box-border, -10.0%), -fx-text-box-border),
+        linear-gradient(from 0.0px 0.0px to 0.0px 5.0px, derive(-fx-control-inner-background, -9.0%), -fx-control-inner-background);
+    -fx-background-insets: 0.0, 1.0;
+    -fx-background-radius: 3.0, 2.0;
+    -fx-prompt-text-fill: transparent;
+}
+
